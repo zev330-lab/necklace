@@ -281,15 +281,27 @@ function drawMetatron(){
   nodes.forEach(n=>circle(g,n[0],n[1],3.1,SILVER,0,SILVER));
 }
 
-/* 3. Tree of Life — 10 sefirot + 22 paths */
+/* 3. Tree of Life — 10 sefirot + 22 paths.
+   Node positions traced from the reference drawing (authentic Kircher proportions:
+   wide "abyss" gap below Chokhmah/Binah, compressed middle, Malkhut set apart). */
 function drawTree(){
-  const s=svg(document.getElementById("d-tree"),160,240), g=glowGroup(s,"gt",1.6);
-  const cx=80,dx=50,top=22,dy=33;
-  const P={1:[0,0],2:[1,1],3:[-1,1],4:[1,2],5:[-1,2],6:[0,3],7:[1,4],8:[-1,4],9:[0,5],10:[0,6]};
-  const xy=k=>[cx+P[k][0]*dx, top+P[k][1]*dy];
-  const paths=[[1,2],[1,3],[1,6],[2,3],[2,4],[2,6],[3,5],[3,6],[4,5],[4,6],[4,7],[5,6],[5,8],[6,7],[6,8],[6,9],[7,8],[7,9],[7,10],[8,9],[8,10],[9,10]];
-  paths.forEach(([a,b])=>{const A=xy(a),B=xy(b);line(g,A[0],A[1],B[0],B[1],GOLDL,1.4);});
-  for(let k=1;k<=10;k++){const c=xy(k);circle(g,c[0],c[1],8.5,GOLDL,1.7,BG);}
+  const s=svg(document.getElementById("d-tree"),140,232), g=glowGroup(s,"gt",1.5);
+  const P={
+    1:[70,16],    // Keter
+    2:[115,42],   // Chokhmah (right pillar)
+    3:[25,42],    // Binah   (left pillar)
+    4:[115,89],   // Chesed  (right)
+    5:[25,89],    // Gevurah (left)
+    6:[70,114],   // Tiferet (centre)
+    7:[115,141],  // Netzach (right)
+    8:[25,141],   // Hod     (left)
+    9:[70,164],   // Yesod   (centre)
+    10:[70,216]   // Malkhut (centre, below)
+  };
+  const paths=[[1,2],[1,3],[1,6],[2,3],[2,4],[2,6],[3,5],[3,6],[4,5],[4,6],[4,7],
+               [5,6],[5,8],[6,7],[6,8],[6,9],[7,8],[7,9],[7,10],[8,9],[8,10],[9,10]];
+  paths.forEach(([a,b])=>{const A=P[a],B=P[b];line(g,A[0],A[1],B[0],B[1],GOLDL,1.4);});
+  for(let k=1;k<=10;k++){const c=P[k];circle(g,c[0],c[1],8,GOLDL,1.7,BG);}
 }
 
 function drawQR(){
