@@ -143,8 +143,10 @@
             backdrop-filter:blur(2px); }
   .qr-card .qrlabel{ font-family:'Poppins',system-ui,sans-serif; font-weight:600; font-size:11px;
                      letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin:0 0 16px; }
-  #qr{ display:flex; justify-content:center; }
-  #qr img, #qr canvas{ border-radius:10px; box-shadow:0 0 0 6px #efe7d6, 0 6px 18px rgba(0,0,0,.5); }
+  .qrbox{ display:flex; justify-content:center; }
+  .qr-tile{ background:#efe7d6; padding:16px; border-radius:14px; box-shadow:0 6px 18px rgba(0,0,0,.55); line-height:0; }
+  #qr{ width:176px; height:176px; }
+  #qr canvas, #qr img{ width:176px !important; height:176px !important; display:block; }
   .qr-url{ font-family:'Poppins',system-ui,sans-serif; font-size:12.5px; color:var(--text-soft);
            margin:20px 0 0; word-break:break-all; }
   .foot{ text-align:center; margin-top:34px; font-family:'Poppins',system-ui,sans-serif;
@@ -233,7 +235,7 @@
     <p class="note">Made by hand, worn close.<br>Three forms, set one atop the other — each hidden inside the last all along.</p>
     <div class="qr-card">
       <p class="qrlabel">Scan to read this page</p>
-      <div id="qr"></div>
+      <div class="qrbox"><div class="qr-tile"><div id="qr"></div></div></div>
       <p class="qr-url" id="qr-url">&nbsp;</p>
     </div>
     <p class="foot">The Layered Light</p>
@@ -305,8 +307,12 @@ function drawTree(){
 }
 
 function drawQR(){
-  const url=window.location.href;
-  new QRCode(document.getElementById("qr"),{text:url,width:172,height:172,colorDark:"#14121c",colorLight:"#efe7d6",correctLevel:QRCode.CorrectLevel.M});
+  const url=window.location.href, el=document.getElementById("qr");
+  new QRCode(el,{text:url,width:176,height:176,colorDark:"#14121c",colorLight:"#efe7d6",correctLevel:QRCode.CorrectLevel.M});
+  // qrcodejs emits BOTH a <canvas> and an <img>; pin one to a fixed size, hide the other
+  const cv=el.querySelector("canvas"), im=el.querySelector("img");
+  if(cv){cv.style.width=cv.style.height="176px"; if(im) im.style.display="none";}
+  else if(im){im.style.width=im.style.height="176px"; im.style.display="block";}
   document.getElementById("qr-url").textContent=url;
 }
 
